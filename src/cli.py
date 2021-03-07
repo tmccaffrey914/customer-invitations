@@ -7,7 +7,7 @@ from src.utils.requests import yield_json_from_url
 @click.command()
 @click.argument("filepath", type=click.Path(exists=True))
 @click.option("--output", default="output.txt", help="Output File Location & Name")
-@click.option("--radius", default="100", help="Number of Kilometers Radius Around Dublin to Invite")
+@click.option("--radius", default="100", type=click.INT, help="Number of Kilometers Radius Around Dublin to Invite")
 def from_file(filepath, output, radius):
     """
     Formulate a List of Customers within 100km from the Dublin Office.
@@ -27,7 +27,7 @@ def from_file(filepath, output, radius):
 @click.command()
 @click.argument("url", default="https://s3.amazonaws.com/intercom-take-home-test/customers.txt")
 @click.option("--output", default="output.txt", help="Output File Location & Name")
-@click.option("--radius", default="100", help="Number of Kilometers Radius Around Dublin to Invite")
+@click.option("--radius", default="100", type=click.INT, help="Number of Kilometers Radius Around Dublin to Invite")
 def from_url(url, output, radius):
     """
     Formulate a List of Customers within 100km from the Dublin Office.
