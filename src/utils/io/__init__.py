@@ -12,9 +12,7 @@ def yield_json_from_file(file_path):
     """
     with open(file_path, 'r') as f:
         for line in f:
-            if line.isspace():
-                continue
-            else:
+            if line and not line.isspace():
                 try:
                     yield json.loads(line)
                 except json.JSONDecodeError as e:
@@ -36,3 +34,17 @@ def yield_lines_from_file_in_batches(file_path, batch_size=1024):
             if not data:
                 break
             yield data
+
+
+def output_customers_to_file(output_file, customers):
+    """
+    Output Customer Names and User ID's as a CSV File.
+
+    :param output_file: (String) Filepath with Filename to Output the CSV as
+    :param customers: (Iterable) Object containing Tuples with (User ID, Customer Name)
+    :return: None
+    """
+    with open(output_file, 'w', encoding="utf-8") as f:
+        print("user_id, name ", file=f)
+        for user_id, customer_name in customers:
+            print(f"{user_id}, {customer_name} ", file=f)

@@ -1,6 +1,9 @@
 import click
 from src.main_process import find_customers_in_radius
-from src.utils.io import yield_json_from_file
+from src.utils.io import (
+    yield_json_from_file,
+    output_customers_to_file
+)
 from src.utils.requests import yield_json_from_url
 
 
@@ -17,10 +20,8 @@ def from_file(filepath, output, radius):
     Example Usage:
     create-invite-list-from-file path/to/customers.txt --output ../../invitees.txt
     """
-    with open(output, 'w') as output_file:
-        output_file.write("user_id, name")
-        for user_id, customer_name in find_customers_in_radius(filepath, yield_json_from_file, radius=radius):
-            output_file.write(f"{user_id}, {customer_name}")
+    matching_customers = find_customers_in_radius(filepath, yield_json_from_file, radius=radius)
+    output_customers_to_file(output, matching_customers)
     click.echo(f"Customer Invite List Outputted at [{output}]")
 
 
@@ -38,8 +39,6 @@ def from_url(url, output, radius):
     Example Usage:
     create-invite-list https://s3.amazonaws.com/intercom-take-home-test/customers.txt
     """
-    with open(output, 'w') as output_file:
-        output_file.write("user_id, name\n")
-        for user_id, customer_name in find_customers_in_radius(url, yield_json_from_url, radius=radius):
-            output_file.write(f"{user_id}, {customer_name}\n")
+    matching_customers = find_customers_in_radius(url, yield_json_from_url, radius=radius)
+    output_customers_to_file(output, matching_customers)
     click.echo(f"Customer Invite List Outputted at [{output}]")
