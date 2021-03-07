@@ -9,7 +9,7 @@ with open("README.md", 'r') as f:
 
 
 setup(
-    name='Intercom Take Home Test',
+    name='intercom-take-home-test',
     version='1.0',
     description='Intercom Take Home Test',
     author='Tomás McCaffrey',

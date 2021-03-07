@@ -2,6 +2,7 @@ import os
 import time
 import unittest
 
+from src.constants.exceptions import InvalidCustomerJSON
 from src.utils.io import (
     yield_json_from_file,
     yield_lines_from_file_in_batches
@@ -11,7 +12,7 @@ from src.utils.io import (
 class TestIO(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.file_path = "resources"
+        cls.file_path = os.path.join("src", "tests", "resources")
 
     def test_load_empty_file(self):
         generator_is_empty = True
@@ -64,3 +65,9 @@ class TestIO(unittest.TestCase):
         counter = 0
         for _ in yield_json_from_file(os.path.join(self.file_path, "gappy.txt")):
             counter += 1
+        self.assertGreater(counter, 1)
+
+    def test_file_with_invalid_json(self):
+        with self.assertRaises(InvalidCustomerJSON):
+            for _ in yield_json_from_file(os.path.join(self.file_path, "not_json.txt")):
+                continue

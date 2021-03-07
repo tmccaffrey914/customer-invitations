@@ -2,6 +2,7 @@ import os
 import unittest
 from unittest import mock
 
+from src.constants.exceptions import InvalidCustomerJSON
 from src.utils.requests import yield_json_from_url
 
 
@@ -18,17 +19,21 @@ def mocked_requests_get(*args, **kwargs):
             with open(self.body_file) as f:
                 return f.readlines()
 
+    resource_file_path = os.path.join("src", "tests", "resources")
+
     # The URLs that our Tests try to hit:
     if args[0] == "https://someurl.com/regular.txt":
-        return MockResponse(os.path.join("resources", "regular.txt"), 200)
+        return MockResponse(os.path.join(resource_file_path, "regular.txt"), 200)
     elif args[0] == "https://someurl.com/large_file.txt":
-        return MockResponse(os.path.join("resources", "large_file.txt"), 200)
+        return MockResponse(os.path.join(resource_file_path, "large_file.txt"), 200)
     elif args[0] == "https://someurl.com/empty.txt":
-        return MockResponse(os.path.join("resources", "empty.txt"), 200)
+        return MockResponse(os.path.join(resource_file_path, "empty.txt"), 200)
     elif args[0] == "https://someurl.com/single_record.txt":
-        return MockResponse(os.path.join("resources", "single_record.txt"), 200)
+        return MockResponse(os.path.join(resource_file_path, "single_record.txt"), 200)
     elif args[0] == "https://someurl.com/gappy.txt":
-        return MockResponse(os.path.join("resources", "single_record.txt"), 200)
+        return MockResponse(os.path.join(resource_file_path, "gappy.txt"), 200)
+    elif args[0] == "https://someurl.com/not_json.txt":
+        return MockResponse(os.path.join(resource_file_path, "not_json.txt"), 200)
     else:
         return MockResponse(None, 404)
 
@@ -60,5 +65,11 @@ class TestRequests(unittest.TestCase):
 
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_gappy_request(self, mock_get):
-        for line in yield_json_from_url("https://someurl.com/single_record.txt"):
+        for line in yield_json_from_url("https://someurl.com/gappy.txt"):
             self.assertTrue(isinstance(line, dict))
+
+    @mock.patch("requests.get", side_effect=mocked_requests_get)
+    def test_not_json_request(self, mock_get):
+        with self.assertRaises(InvalidCustomerJSON):
+            for _ in yield_json_from_url("https://someurl.com/not_json.txt"):
+                continue

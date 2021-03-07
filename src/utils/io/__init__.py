@@ -1,4 +1,5 @@
 import json
+from src.constants.exceptions import InvalidCustomerJSON
 
 
 def yield_json_from_file(file_path):
@@ -10,11 +11,14 @@ def yield_json_from_file(file_path):
     :yield: (Dictionary/List) Format Lines from the File `filename`
     """
     with open(file_path, 'r') as f:
-        while True:
-            data = f.readline()
-            if not data or data.isspace():
-                break
-            yield json.loads(data)
+        for line in f:
+            if line.isspace():
+                continue
+            else:
+                try:
+                    yield json.loads(line)
+                except json.JSONDecodeError as e:
+                    raise InvalidCustomerJSON("Customer JSON is Invalid") from e
 
 
 def yield_lines_from_file_in_batches(file_path, batch_size=1024):
