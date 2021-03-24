@@ -6,8 +6,8 @@ of Dublin.
 ## 🏃How to Run 🚶
 First things first, lets get our own copy of the project:
 ```shell script
-git clone https://github.com/tmccaffrey914/intercom.git
-cd intercom
+git clone https://github.com/tmccaffrey914/customer-invitations.git
+cd customer-invitations
 ```
 
 The simplest way to get started is to run the project as a Pip distributed package. To do this, simply run:
