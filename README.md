@@ -1,7 +1,7 @@
-# Intercom Take Home Test
+# Take Home Test
 This package takes an input of Customer Information in the form of a Text File - either stored locally on the machine 
-or at a given URL; and a Radius in Kilometers. The Radius is used then to determine which customers are within range 
-of the Dublin Intercom office.
+or at a given URL; and a Radius in Kilometers. The Radius is then used to determine which customers are within range 
+of Dublin.
 
 ## 🏃How to Run 🚶
 First things first, lets get our own copy of the project:
