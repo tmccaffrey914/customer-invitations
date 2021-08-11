@@ -57,8 +57,17 @@ python -m unittest discover src/tests -p 'Test*.py'
 This runs all the tests at once, something useful in CI/CD Pipelines.
 
 To get more hands on with the UnitTests, you can run them within your IDE using the same Python Interpreter 
-that we set up in the "How to Develop" Section. Just make sure you set the "Working Directory" to be the 
-Project Root.
+that we set up in the "How to Develop" Section. Just make sure you set the "Working Directory" to be the Project Root.
+
+## 🐳 Docker Instructions 🐳
+In your Shell, Navigate to the Project Root and run:
+```
+docker image build -t invite-customers .
+```
+Once the Docker Image "invite-customers" has finished building, run the Image as a Container:
+```
+docker run invite-customers
+```
 
 ## 😢 How to Uninstall 😢
 Yes, this is needed too. Run: 
